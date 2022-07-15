@@ -4,18 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to song</title>
+    <title>Transform images to sound</title>
 
+    <!-- import p5.js -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
+    <!-- import tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.40/Tone.js" integrity="sha512-59wz3/QJMP1QgULLB5O08pqS8wIdlvK1iJaRZm6ESyRrUuxjdRrnKepXKbSTbjX3ZZZ19AbiCJZEaZN7Zm8OjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main>
         <h1>Image to song</h1>
-        <img src="https://source.unsplash.com/random/300x300" alt="image that will become a song">
-        <br>
-        <button>Click me</button>
-        <button>Next image-song</button>
+        <p>
+            Click on the image in various places to hear the color data turned into music.
+        </p>
+        <!-- <img src="https://source.unsplash.com/random/300x300" alt="image that will become a song"> -->
+        <!-- <br> -->
+        <!-- play the song -->
+        <!-- <button id="start" type="button" name="button">Play music from the image</button> -->
+        <!-- load a new image -->
+        <button>New Random image</button>
+        <script src="sketch.js"></script>
     </main>
 </body>
 </html>
