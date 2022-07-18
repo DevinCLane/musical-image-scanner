@@ -2,6 +2,14 @@
 // get shadows or contours or any data from the image
 // Convert that into frequency
 
+// User uploaded image from:
+// https://p5js.org/reference/#/p5/createFileInput
+// https://editor.p5js.org/rjgilmour/sketches/uUPvCTZ2R
+
+let canvasWidth = 1000;
+let canvasHeight = 1000;
+let input;
+let userImg;
 let ready = false;
 let chorus = undefined;
 let reverb = undefined;
@@ -17,6 +25,7 @@ let bass = undefined;
 const now = Tone.now();
 let myImage;
 let c;
+
 
 document.getElementById('start').addEventListener('click', async () => {
 	i = 0; // resets the counter back to zero, this way we can play the song/animation again
@@ -34,7 +43,7 @@ document.getElementById('start').addEventListener('click', async () => {
 })
 
 document.getElementById('new-image').addEventListener('click', async () => {
-    myImage = loadImage('https://source.unsplash.com/random/1000x1000');
+
 })
 
 // create an average, remove the A from the rgba
@@ -50,16 +59,32 @@ const averagePixels = array => {
     return sum / length;
 }
 
+// calculate standard deviation
+// https://stackoverflow.com/questions/7343890/standard-deviation-javascript
+function getStandardDeviation (array) {
+    const n = array.length
+    const mean = array.reduce((a, b) => a + b) / n
+    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+}
+
 
 
 // const synth = new Tone.Synth().toDestination();
 
 function preload() {
-    myImage = loadImage('https://source.unsplash.com/random/1000x1000');
+    // if user uploaded image, load that
+    // if nothing, load random image
+    if (userImg) {
+        myImage = loadImage(userImg)
+    } else {
+        myImage = loadImage('https://source.unsplash.com/random/1000x1000');
+    }
 }
 
 function setup() {
-    createCanvas(1000, 1000);
+    createCanvas(canvasWidth, canvasHeight);
+    // input = createFileInput(handleFile);
+    // input.position(0, 0);
     frameRate(7);
     colorMode(HSL);
     // background(myImage);
@@ -92,6 +117,7 @@ function draw() {
         ready = false;
         return;
     }
+
 
     let oneImageBand = myImage.height / 4;
     let sopranoImageBand = myImage.get(i, 0, 25, oneImageBand)
@@ -135,7 +161,7 @@ function draw() {
     synth.triggerAttackRelease([soprano, alto], now)
 
     // todo: programmatically change effect parameters and synth parameters in here 
-    crusher.bits = lerp(0, 16, averagePixels(tenorImageBand.pixels)/255)
+    crusher.bits = lerp(0, 16, getStandardDeviation(bassImageBand.pixels)/255)
     chorus.frequency = lerp(0, 16, averagePixels(altoImageBand.pixels)/255)
     // reverb.decay = lerp(0, 10, averagePixels(bassImageBand.pixels)/255) 
     // linear interpolation to get a range of pitches I like
@@ -146,3 +172,12 @@ function draw() {
     image(imageColumn, i, 0)
     i+=25
 }
+
+// https://p5js.org/reference/#/p5/createFileInput
+function handleFile() {
+    const selectedFile = document.getElementById('upload');
+    const myImageFile = selectedFile.files[0];
+    let urlOfImageFile = URL.createObjectURL(myImageFile);
+    userImg = loadImage(urlOfImageFile);
+    myImage = userImg;
+  }
