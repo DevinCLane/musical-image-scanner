@@ -17,14 +17,15 @@
     <main>
         <h1>Image to song</h1>
         <p>
-            Click on the image in various places to hear the color data turned into music.
+            Each column of the image has its color data averaged, and converted
+            into a pitch between ~80-900 hz
         </p>
         <!-- <img src="https://source.unsplash.com/random/300x300" alt="image that will become a song"> -->
         <!-- <br> -->
         <!-- play the song -->
-        <button id="start" type="button" name="button">Play music from the image</button>
+        <button id="start" type="button" name="start-button">Play music from the image</button>
         <!-- load a new image -->
-        <button>New Random image</button>
+        <button id="new-image" type="button" name="new-image-button">New Random image</button>
         <script src="sketch.js"></script>
     </main>
 </body>
