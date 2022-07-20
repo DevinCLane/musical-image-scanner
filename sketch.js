@@ -1,11 +1,23 @@
-// import image
-// get shadows or contours or any data from the image
-// Convert that into frequency
+/* 
+To do:
+- Make the music sound cooler
+- New random image should work
+- Resize user uploaded images so they fit the canvas
+- Change the whole canvas to make it smaller so the layout looks nicer
+- Add nice CSS
+*/
 
-// User uploaded image from:
-// https://p5js.org/reference/#/p5/createFileInput
-// https://editor.p5js.org/rjgilmour/sketches/uUPvCTZ2R
+/* 
+Turn an image into song by Devin Lane
 
+Analyzes color data and turns it into music.
+Splits each image into columns, and each column into four sections.
+We then average the color value of each section and assign it to a pitch.
+Then we move left to right until the image is fully drawn upon our canvas.
+Effect parameters are modulated according to different data in the image.
+*/
+
+// variables
 let canvasWidth = 1000;
 let canvasHeight = 1000;
 let input;
@@ -26,7 +38,7 @@ const now = Tone.now();
 let myImage;
 let c;
 
-
+// play button
 document.getElementById('start').addEventListener('click', async () => {
 	i = 0; // resets the counter back to zero, this way we can play the song/animation again
     clear(); // clears the canvas so that we can draw the image again
@@ -42,16 +54,25 @@ document.getElementById('start').addEventListener('click', async () => {
 	console.log('audio is ready')
 })
 
+// new random image
 document.getElementById('new-image').addEventListener('click', async () => {
-
+    // loadImage('https://source.unsplash.com/random/1000x1000', img => {
+    //     myImage = image(img, 0, 0);
+    // });
+    myImage = await loadImage('https://source.unsplash.com/random/1000x1000');
+    // ready = false;
 })
 
-// create an average, remove the A from the rgba
+console.log(myImage)
+
+// Average helper function: create an average, remove the A from the RGBA values;
 const averagePixels = array => {
     let sum = 0;
     let length = 0;
     for (let i = 0; i < array.length; i++) {
-        if (i % 4 !== 0) { // ignore the 4th value which is the alpha
+        // ignore the 4th value which is the alpha (i.e., skip 3, 7, 11, 15, 19...)
+        // this way we get more variability within the color averages, otherwise everything has 255 bringing it closer together
+        if (i % 4 !== 3) { 
             sum += array[i];
             length++
         }
@@ -68,94 +89,66 @@ function getStandardDeviation (array) {
 }
 
 
-
-// const synth = new Tone.Synth().toDestination();
-
 function preload() {
-    // if user uploaded image, load that
-    // if nothing, load random image
-    if (userImg) {
-        myImage = loadImage(userImg)
-    } else {
-        myImage = loadImage('https://source.unsplash.com/random/1000x1000');
-    }
+    myImage = loadImage('https://source.unsplash.com/random/1000x1000');
 }
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    // input = createFileInput(handleFile);
-    // input.position(0, 0);
     frameRate(7);
-    colorMode(HSL);
-    // background(myImage);
-    // noStroke();
-// todo: loop across the image size
-// send this data to tone.js
-/* 
-get() syntax: get(x, y, w, h)
-x Number: x-coordinate of the pixel
-y Number: y-coordinate of the pixel
-w Number: width
-h Number: height 
-*/
-
-    // synth.triggerAttackRelease(c[0], '32n');
+    // colorMode(HSL);
 }
-
-// function mousePressed() {
-//     colorData = myImage.get(mouseX, mouseY)
-//     synth.triggerAttackRelease(colorData[0], '16n')
-//     console.log(colorData)
-// }
 
 let i = 0;
 function draw() {
+    // Don't draw anything until our play button is pushed
     if (!ready) {
         return;
     }
+    // stop drawing the image once there's no more image to draw
     if (i >= myImage.width) {
         ready = false;
         return;
     }
 
+    // split the image into columns. We will analyze one column at a time musically, and draw it.
+    let imageColumn = myImage.get(i, 0, 25, myImage.height)
 
+    // within one vertical band, split the image into four horizontal bands and use them for soprano, alto, tenor, bass
     let oneImageBand = myImage.height / 4;
     let sopranoImageBand = myImage.get(i, 0, 25, oneImageBand)
     let altoImageBand = myImage.get(i, oneImageBand, 25, oneImageBand)
     let tenorImageBand = myImage.get(i, oneImageBand * 2, 25, oneImageBand)
     let bassImageBand = myImage.get(i, oneImageBand * 3, 25, oneImageBand)
-
-
-    let imageColumn = myImage.get(i, 0, 25, myImage.height)
-    // let horizontalImageBand = myImage.get(i, imageColumn, myImage.height / 4)
+    
+    // p5.js needs us to run this function to load the pixel data into the [pixels] attribute
     imageColumn.loadPixels();
     sopranoImageBand.loadPixels();
     altoImageBand.loadPixels();
     tenorImageBand.loadPixels();
     bassImageBand.loadPixels();
 
-    console.log(tenorImageBand.pixels)
-
     // setting up chords
     // approx frequency range of vocals from https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119164746.app2
-    // 250 - 1000
+    // 250 - 1000 soprano
     soprano = lerp(250, 1000, averagePixels(sopranoImageBand.pixels)/255)
-    console.log(soprano)
+    console.log(soprano, "soprano note")
     // synth.triggerAttack(soprano, now)
-    // 200 - 700
+    // 200 - 700 alto
     alto = lerp(200, 700, averagePixels(altoImageBand.pixels)/255)
-    console.log(alto)
+    console.log(alto, "alto note")
     // synth.triggerAttack(alto, now)
-    // 110 -- 425
+    // 110 -- 425 tenor
     tenor = lerp(110, 425, averagePixels(tenorImageBand.pixels)/255)
-    console.log(tenor)
+    console.log(tenor, "tenor note")
     // synth.triggerAttack(tenor, now)
-    // 60 - 350
+    // 60 - 350 bass
     bass = lerp(60, 350, averagePixels(bassImageBand.pixels)/255)
-    console.log(bass)
+    console.log(bass, "bass note")
     // synth.triggerAttack(bass, now)
 
     // synth.triggerRelease([soprano, alto, tenor, bass], now);
+    
     plucky.triggerAttackRelease(tenor, now)
     fm.triggerAttackRelease(bass, now)
     synth.triggerAttackRelease([soprano, alto], now)
@@ -169,10 +162,15 @@ function draw() {
     // console.log(pitch)
     // synth.triggerAttackRelease(pitch, '16n')
     
+    // draw the image one 'imageColumn' at a time from left to right, at the speed of the frame rate
     image(imageColumn, i, 0)
+    // move 25 pixels at a time from left to right
     i+=25
 }
 
+// Handle user uploaded images
+// References:
+// https://editor.p5js.org/rjgilmour/sketches/uUPvCTZ2R
 // https://p5js.org/reference/#/p5/createFileInput
 function handleFile() {
     const selectedFile = document.getElementById('upload');
@@ -180,4 +178,4 @@ function handleFile() {
     let urlOfImageFile = URL.createObjectURL(myImageFile);
     userImg = loadImage(urlOfImageFile);
     myImage = userImg;
-  }
+}
