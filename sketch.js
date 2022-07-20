@@ -5,6 +5,8 @@ To do:
 - Resize user uploaded images so they fit the canvas
 - Change the whole canvas to make it smaller so the layout looks nicer
 - Add nice CSS
+- Change the browse button to look nice, and give confirmation of new upload
+- add line data to pitch
 */
 
 /* 
@@ -59,11 +61,28 @@ document.getElementById('new-image').addEventListener('click', async () => {
     // loadImage('https://source.unsplash.com/random/1000x1000', img => {
     //     myImage = image(img, 0, 0);
     // });
-    myImage = await loadImage('https://source.unsplash.com/random/1000x1000');
-    // ready = false;
+    myImage = await loadImage('https://source.unsplash.com/random?sig=2/1000x1000');
+    myImage.loadPixels();
+    console.log(myImage)
+    ready = false;
+    i = 0;
+    clear();
 })
 
-console.log(myImage)
+// new random image
+document.getElementById('new-image').addEventListener('click', () => {
+    // loadImage('https://source.unsplash.com/random/1000x1000', img => {
+    //     myImage = image.get(img, 0, 0);
+    // });
+    // myImage = await loadImage('https://source.unsplash.com/random/1000x1000');
+    // // myImage.loadPixels();
+    // console.log(myImage)
+    // ready = false;
+    // i = 0;
+    // clear();
+})
+
+// console.log(myImage)
 
 // Average helper function: create an average, remove the A from the RGBA values;
 const averagePixels = array => {
@@ -179,3 +198,4 @@ function handleFile() {
     userImg = loadImage(urlOfImageFile);
     myImage = userImg;
 }
+
