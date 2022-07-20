@@ -58,28 +58,14 @@ document.getElementById('start').addEventListener('click', async () => {
 
 // new random image
 document.getElementById('new-image').addEventListener('click', async () => {
-    // loadImage('https://source.unsplash.com/random/1000x1000', img => {
-    //     myImage = image(img, 0, 0);
-    // });
-    myImage = await loadImage('https://source.unsplash.com/random?sig=2/1000x1000');
-    myImage.loadPixels();
-    console.log(myImage)
-    ready = false;
-    i = 0;
-    clear();
-})
-
-// new random image
-document.getElementById('new-image').addEventListener('click', () => {
-    // loadImage('https://source.unsplash.com/random/1000x1000', img => {
-    //     myImage = image.get(img, 0, 0);
-    // });
-    // myImage = await loadImage('https://source.unsplash.com/random/1000x1000');
-    // // myImage.loadPixels();
+    // let loadNewRandomImage = 1;
+    myImage = await loadImage(`https://source.unsplash.com/random?sig=${Math.random()}/1000x1000`);
+    // myImage.loadPixels();
     // console.log(myImage)
     // ready = false;
-    // i = 0;
-    // clear();
+    i = 0;
+    clear();
+    // loadNewRandomImage++
 })
 
 // console.log(myImage)
