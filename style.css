@@ -4,7 +4,10 @@
     box-sizing: border-box;
 }
 
+
 body {
+    /* https://cssgradient.io/swatches/ */
+    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
     min-height: 100vh;
     max-width: 960px;
     margin: 0 auto;
@@ -38,7 +41,7 @@ https://cssbuttons.io/detail/ke1221/ancient-walrus-24
 
 } */
 
-button, .upload-label {
+button, .upload-label, canvas {
     margin: 1.5rem;
     border: 1px solid #e8e8e8;
     color: #090909;

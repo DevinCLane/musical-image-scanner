@@ -100,6 +100,7 @@ const newImage = document.getElementById('new-image');
 newImage.addEventListener('click', async () => {
     myImage = await loadImage(`https://source.unsplash.com/random/600x600/?sig=${Math.random()}`);
     // newImage.textContent = "New image loaded. Now press play"
+    canvasResizer(myImage);
     clear();
 })
 
@@ -128,6 +129,18 @@ function getStandardDeviation (array) {
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
 }
 
+// canvas resize function
+    // if the image is taller than 600px, resize it, but maintain aspect ratio
+    // from https://p5js.org/reference/#/p5/createFileInput
+function canvasResizer (myImage) {
+    if(myImage.height !== canvasHeight){
+        myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
+        resizeCanvas(myImage.width, myImage.height)
+        canvasWidth = myImage.width
+        canvasHeight = myImage.height
+      }
+} 
+
 
 function preload() {
     myImage = loadImage('https://source.unsplash.com/random/600x600');
@@ -151,14 +164,8 @@ function draw() {
         return;
     }
 
-    // if the image is taller than 600px, resize it, but maintain aspect ratio
-    // from https://p5js.org/reference/#/p5/createFileInput
-    if(myImage.height !== canvasHeight){
-        myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
-        resizeCanvas(myImage.width, myImage.height)
-        canvasWidth = myImage.width
-        canvasHeight = myImage.height
-      }
+    canvasResizer(myImage);
+
     // if the user image is too big, resize it down:
     
     // if(myImage.height && myImage.height !== canvasHeight){
