@@ -1,15 +1,15 @@
 /* 
 To do:
+- Resize user uploaded images so they fit the canvas
+- include some of my favorite images that sound nice
 - Make the music sound cooler
 - New random image should work
-- Resize user uploaded images so they fit the canvas
-- Change the whole canvas to make it smaller so the layout looks nicer
+- ✅ Change the whole canvas to make it smaller so the layout looks nicer
 - Add nice CSS
 - Change the browse button to look nice, and give confirmation of new upload
 - add line data to pitch
 - after loading a new image, sometimes get "An error with message "Index or size is negative or greater than the allowed amount" occurred inside the p5js library when loadPixels was called. If not stated otherwise, it might be an issue with the arguments passed to loadPixels."
-- include some of my favorite images that sound nice
-- cracking in my speakers?
+- ✅ cracking in my speakers?
 - Play with synth types: sine, triangle, sawtooth, square;
 */
 
@@ -64,6 +64,9 @@ const sampler = new Tone.Sampler({
 	release: 1,
 	baseUrl: "/samples/",
 })
+
+
+
 reverb = new Tone.Reverb(2).toDestination();
 chorus = new Tone.Chorus(4, 2.5, 0.5).connect(reverb);
 distortion = new Tone.Distortion(0.8).connect(reverb);
@@ -147,6 +150,15 @@ function draw() {
         ready = false;
         return;
     }
+
+    // if the image is taller than 600px, resize it, but maintain aspect ratio
+    // from https://p5js.org/reference/#/p5/createFileInput
+    if(myImage.height && myImage.height !== canvasHeight){
+        myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
+        resizeCanvas(myImage.width, myImage.height)
+        canvasWidth = myImage.width
+        canvasHeight = myImage.height
+      }
     // if the user image is too big, resize it down:
     
     // if(myImage.height && myImage.height !== canvasHeight){
@@ -221,5 +233,6 @@ function handleFile() {
     let urlOfImageFile = URL.createObjectURL(myImageFile);
     userImg = loadImage(urlOfImageFile);
     myImage = userImg;
+    clear();
 }
 
