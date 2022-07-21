@@ -1,12 +1,14 @@
 /* 
 To do:
-- Resize user uploaded images so they fit the canvas
+- ✅ Resize user uploaded images so they fit the canvas
 - include some of my favorite images that sound nice
 - Make the music sound cooler
-- New random image should work
+- ✅ New random image should work
 - ✅ Change the whole canvas to make it smaller so the layout looks nicer
 - Add nice CSS
-- Change the browse button to look nice, and give confirmation of new upload
+- Change the browse button to look nice
+- Give confirmation of new upload
+- Give confirmation of new random image loaded
 - add line data to pitch
 - after loading a new image, sometimes get "An error with message "Index or size is negative or greater than the allowed amount" occurred inside the p5js library when loadPixels was called. If not stated otherwise, it might be an issue with the arguments passed to loadPixels."
 - ✅ cracking in my speakers?
@@ -27,7 +29,6 @@ Effect parameters are modulated according to different data in the image.
 // variables
 let canvasWidth = 600;
 let canvasHeight = 600;
-let input;
 let userImg;
 let ready = false;
 
@@ -64,7 +65,6 @@ const sampler = new Tone.Sampler({
 	release: 1,
 	baseUrl: "/samples/",
 })
-
 
 
 reverb = new Tone.Reverb(2).toDestination();
@@ -135,7 +135,7 @@ function preload() {
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    frameRate(6);
+    frameRate(5.2);
     // colorMode(HSL);
 }
 
@@ -153,7 +153,7 @@ function draw() {
 
     // if the image is taller than 600px, resize it, but maintain aspect ratio
     // from https://p5js.org/reference/#/p5/createFileInput
-    if(myImage.height && myImage.height !== canvasHeight){
+    if(myImage.height !== canvasHeight){
         myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
         resizeCanvas(myImage.width, myImage.height)
         canvasWidth = myImage.width

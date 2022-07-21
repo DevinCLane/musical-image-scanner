@@ -25,21 +25,21 @@
     <!-- open graph tags -->
     <meta property="og:site_name" content="Musical Image Scanner" />
     <meta property=“og:title” content="Musical Image Scanner" />
-    <meta property="og:description" content="One day of earthquakes as a one minute song: Earthquake Music pulls data from USGS for the last day of earthquakes and creates a song according to composer Devin Lane's instructions" />
-    <meta property="og:url" content="https://earthquakemusic.netlify.app/" />
+    <meta property="og:description" content="Turn your image into music" />
+    <meta property="og:url" content="https://musical-image-scanner.netlify.app/" />
     <meta property="og:type" content="website" />
     <meta property="article:publisher" content="https://www.devinlane.com" />
     <meta property="article:section" content="Creative code" />
     <meta property="article:tag" content="Creative code" />
-    <meta property="og:image" content="https://earthquakemusic.netlify.app/img/logo.png" />
-    <meta property="og:image:secure_url" content="https://earthquakemusic.netlify.app/img/logo.png" />
+    <meta property="og:image" content="https://musical-image-scanner.netlify.app/logo.png" />
+    <meta property="og:image:secure_url" content="https://musical-image-scanner.netlify.app/logo.png" />
     <meta property="og:image:width" content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:image" content="https://earthquakemusic.netlify.app/img/logo.png" />
+    <meta property="twitter:image" content="https://musical-image-scanner.netlify.app/logo.png" />
     <meta property="twitter:site" content="@DevinCLane" />
-    <meta name="twitter:description" content="One day of earthquakes as a one minute song" />
-    <meta name="twitter:title" content="Earthquake Music" />
+    <meta name="twitter:description" content="Turn your image into music" />
+    <meta name="twitter:title" content="Musical Image Scanner" />
 </head>
 <body>
     <main>
@@ -49,17 +49,24 @@
             Each row has its color data averaged, and converted into a pitch.
             The result is a four-part harmony, inspired by a soprano, alto, tenor, bass chorale.
         </p>
-        <!-- <img src="https://source.unsplash.com/random/300x300" alt="image that will become a song"> -->
-        <!-- <br> -->
+        <p>
+            Random images from <a href="https://unsplash.com/" target="_blank">Unsplash</a>
+        </p>
+        <p>
+            Press play, and music from a random image will play.
+        </p>
         <!-- play the song -->
-        <button id="start" type="button" name="start-button">Play</button>
-        <button id="stop" type="button" name="stop">Stop</button>
-        <label class="upload-label">
-            <input accept=".png, .jpg, .jpeg" type="file" id="upload" onchange="handleFile()">Upload your own image, then press play</input>
-        </label>
-        <!-- load a new image -->
-        <button id="new-image" type="button" name="new-image-button">Load a new random image, then press play</button>
-        <script src="sketch.js"></script>
+        <div class="button-area-top">
+            <button id="start" type="button" name="start-button">Play</button>
+            <button id="stop" type="button" name="stop">Stop</button>
+        </div>
+        <div class="button-area-bottom">
+            <button id="new-image" type="button" name="new-image-button">Load a new random image, then press play</button>
+            <label class="upload-label">
+                <input accept=".png, .jpg, .jpeg" type="file" id="upload" onchange="handleFile()">Upload your own image, then press play
+            </label>
+        </div>
     </main>
+    <script src="sketch.js"></script>
 </body>
 </html>
