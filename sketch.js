@@ -7,6 +7,10 @@ To do:
 - Add nice CSS
 - Change the browse button to look nice, and give confirmation of new upload
 - add line data to pitch
+- after loading a new image, sometimes get "An error with message "Index or size is negative or greater than the allowed amount" occurred inside the p5js library when loadPixels was called. If not stated otherwise, it might be an issue with the arguments passed to loadPixels."
+- include some of my favorite images that sound nice
+- cracking in my speakers?
+- Play with synth types: sine, triangle, sawtooth, square;
 */
 
 /* 
@@ -17,14 +21,16 @@ Splits each image into columns, and each column into four sections.
 We then average the color value of each section and assign it to a pitch.
 Then we move left to right until the image is fully drawn upon our canvas.
 Effect parameters are modulated according to different data in the image.
+
 */
 
 // variables
-let canvasWidth = 1000;
-let canvasHeight = 1000;
+let canvasWidth = 600;
+let canvasHeight = 600;
 let input;
 let userImg;
 let ready = false;
+
 let chorus = undefined;
 let reverb = undefined;
 let synth = undefined;
@@ -32,40 +38,66 @@ let plucky = undefined;
 let crusher = undefined;
 let distortion = undefined;
 let fm = undefined;
+const now = Tone.now();
+
 let soprano = undefined;
 let alto = undefined;
 let tenor = undefined;
 let bass = undefined;
-const now = Tone.now();
+
 let myImage;
 let c;
 
+
+/* 
+Tone.js audio setup
+*/
+
+// sampler
+const sampler = new Tone.Sampler({
+	urls: {
+		"C4": "guitar1.mp3",
+		"E4": "guitar2.mp3",
+		"G4": "guitar3.mp3",
+		"D3": "guitar4.mp3",
+	},
+	release: 1,
+	baseUrl: "/samples/",
+})
+reverb = new Tone.Reverb(2).toDestination();
+chorus = new Tone.Chorus(4, 2.5, 0.5).connect(reverb);
+distortion = new Tone.Distortion(0.8).connect(reverb);
+fm = new Tone.FMSynth().connect(distortion);
+crusher = new Tone.BitCrusher(4).connect(chorus);
+plucky = new Tone.PluckSynth().connect(crusher);
+synth = new Tone.PolySynth(Tone.Synth).connect(chorus);
+sampler.chain(chorus, reverb, Tone.Destination)
+
+
 // play button
-document.getElementById('start').addEventListener('click', async () => {
+const startButton = document.getElementById('start');
+startButton.addEventListener('click', async () => {
 	i = 0; // resets the counter back to zero, this way we can play the song/animation again
     clear(); // clears the canvas so that we can draw the image again
     await Tone.start() // allows the audio context to start so we can play audio
-    reverb = new Tone.Reverb(2).toDestination();
-    chorus = new Tone.Chorus(4, 2.5, 0.5).connect(reverb);
-    distortion = new Tone.Distortion(0.8).connect(reverb);
-    fm = new Tone.FMSynth().connect(distortion);
-    crusher = new Tone.BitCrusher(4).connect(chorus);
-    plucky = new Tone.PluckSynth().connect(crusher);
-    synth = new Tone.PolySynth(Tone.Synth).connect(chorus);
+    await Tone.loaded()
     ready = true;
 	console.log('audio is ready')
 })
 
+// stop button
+document.getElementById('stop').addEventListener('click', () => {
+    ready = false;
+})
+
+
 // new random image
-document.getElementById('new-image').addEventListener('click', async () => {
-    // let loadNewRandomImage = 1;
-    myImage = await loadImage(`https://source.unsplash.com/random?sig=${Math.random()}/1000x1000`);
-    // myImage.loadPixels();
-    // console.log(myImage)
-    // ready = false;
-    i = 0;
+// add success message https://bobbyhadz.com/blog/javascript-change-button-text-on-click
+const newImage = document.getElementById('new-image');
+newImage.addEventListener('click', async () => {
+    myImage = await loadImage(`https://source.unsplash.com/random/600x600/?sig=${Math.random()}`);
+    // newImage.textContent = "New image loaded. Now press play"
     clear();
-    // loadNewRandomImage++
 })
 
 // console.log(myImage)
@@ -95,12 +127,12 @@ function getStandardDeviation (array) {
 
 
 function preload() {
-    myImage = loadImage('https://source.unsplash.com/random/1000x1000');
+    myImage = loadImage('https://source.unsplash.com/random/600x600');
 }
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    frameRate(7);
+    frameRate(6);
     // colorMode(HSL);
 }
 
@@ -115,7 +147,12 @@ function draw() {
         ready = false;
         return;
     }
-
+    // if the user image is too big, resize it down:
+    
+    // if(myImage.height && myImage.height !== canvasHeight){
+    //     myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
+    //     resizeCanvas(myImage.width, myImage.height)
+    // }
     // split the image into columns. We will analyze one column at a time musically, and draw it.
     let imageColumn = myImage.get(i, 0, 25, myImage.height)
 
@@ -153,14 +190,15 @@ function draw() {
     // synth.triggerAttack(bass, now)
 
     // synth.triggerRelease([soprano, alto, tenor, bass], now);
-    
+
+    sampler.triggerAttackRelease(alto, now)
     plucky.triggerAttackRelease(tenor, now)
     fm.triggerAttackRelease(bass, now)
-    synth.triggerAttackRelease([soprano, alto], now)
+    synth.triggerAttackRelease(soprano, now)
 
     // todo: programmatically change effect parameters and synth parameters in here 
-    crusher.bits = lerp(0, 16, getStandardDeviation(bassImageBand.pixels)/255)
-    chorus.frequency = lerp(0, 16, averagePixels(altoImageBand.pixels)/255)
+    // crusher.bits = lerp(0, 16, getStandardDeviation(bassImageBand.pixels)/255)
+    // chorus.frequency = lerp(0, 16, averagePixels(altoImageBand.pixels)/255)
     // reverb.decay = lerp(0, 10, averagePixels(bassImageBand.pixels)/255) 
     // linear interpolation to get a range of pitches I like
     // let pitch = lerp(60, 900, averagePixels(imageColumn.pixels)/255)

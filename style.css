@@ -30,7 +30,11 @@ main img {
 adapted from 
 https://cssbuttons.io/detail/ke1221/ancient-walrus-24
 */
-button, #upload {
+#upload {
+    display: none;
+}
+
+button, .upload-label {
     margin: 1.5rem;
     border: 1px solid #e8e8e8;
     color: #090909;

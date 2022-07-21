@@ -20,6 +20,10 @@ HTML, CSS, JavaScript, as well as the JavaScript libraries p5.js and tone.js.
 ## What sort of challenges or tradeoffs did you encounter, and how did you solve these issues?
 
 ## What would you do if you had more time?
+- Have the stop button restart from the same position
+- Add rhythm controls
+- Use line data for effect modulation
+- Test on mobile and allow users to upload images with their phones
 
 ## Do you have any feedback for us on this assignment? Any other questions?
 
