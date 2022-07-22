@@ -1,4 +1,4 @@
-# Musical Image Scanner
+# [Musical Image Scanner](https://musical-image-scanner.netlify.app/) by Devin Lane
 Given an image, turn it into sound.
 
 ## How do you use it? 
@@ -25,11 +25,11 @@ A random image is loaded from Unsplash. Within the code, each image is "split" i
 
 ## What would you do if you had more time?
 
-- Establish a musical frequency framework and perhaps use a 12-tone system. Currently each frequency is played as is, so everything sounds very microtonal (e.g., a pitch of 474.88hz might be played, which lies between C# and D in an equal-tempered A440 tuning system)
-- Include a "pause" function, so that you can stop a song, and have it resume from the same position. Currently you may stop, and if you press play again, the song restarts.
-- Add rhythm controls and give more thought to tempo. Perhaps a different data point like line values could change the tempo of the piece of music.
+- Establish a musical frequency framework and perhaps use a 12-tone system. Currently each frequency is converted directly from a color value and played as is. The resultant sound is very microtonal, which is evocative from one perspective, or slightly dissonant from another perspective. For example, a pitch of 474.88hz might be played, which lies between C#2 (497.87hz) and D2 (469.92) in an equal-tempered A440 tuning system.
+- Include a "pause" function. This way you could stop a song, and then resume from the same position. Currently if you press "stop", when you press "play" again, the song restarts.
+- Add rhythm controls and include more tempo variability in the compositions. Perhaps a different data point like line values could change the tempo of the piece of music.
 - Allow different data pieces to modulate the effect parameters.
 - Test on mobile and allow users to upload images with their phones.
-- Add "image loaded" notifications when a new image is loaded. Make it clearer that the user should press play after new image is loaded.
-- Play with new tones, different synthesizers, new samples. More generally improve the musical composition. Perhaps include different presets the user may select
+- Add "image loaded" notifications when a new image is loaded. Make it clearer that the user should press play after the new image is loaded.
+- Play with new tones, different synthesizers, new samples, different parameters of the synthesizers. More generally improve the musical composition. Perhaps include different presets the user may select
 - Explore possibilities of using machine learning image detection for examples such as "if there's a cat, play this noise". 
