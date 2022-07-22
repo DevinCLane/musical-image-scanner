@@ -32,3 +32,4 @@ A random image is loaded from Unsplash. Within the code, each image is "split" i
 - Test on mobile and allow users to upload images with their phones.
 - Add "image loaded" notifications when a new image is loaded. Make it clearer that the user should press play after new image is loaded.
 - Play with new tones, different synthesizers, new samples. More generally improve the musical composition. Perhaps include different presets the user may select
+- Explore possibilities of using machine learning image detection for examples such as "if there's a cat, play this noise". 
