@@ -13,6 +13,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
 
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet"> 
+
     <!-- import p5.js -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.js"></script>
     
@@ -61,12 +66,15 @@
             <button id="stop" type="button" name="stop">Stop</button>
         </div>
         <div class="button-area-bottom">
-            <button id="new-image" type="button" name="new-image-button">Load a new random image, then press play</button>
-            <label class="upload-label">
-                <input accept=".png, .jpg, .jpeg" type="file" id="upload" onchange="handleFile()">Upload your own image, then press play
+            <button id="new-image" type="button" name="new-image-button">Load a new random image</button>
+            <label for="upload" class="upload-label"> Upload
             </label>
+                <input accept=".png, .jpg, .jpeg" type="file" id="upload" onchange="handleFile()">
         </div>
     </main>
     <script src="sketch.js"></script>
+    <footer>
+        Made with care by <a href="https://www.devinlane.com/" target="_blank">Devin Lane</a>
+    </footer>
 </body>
 </html>

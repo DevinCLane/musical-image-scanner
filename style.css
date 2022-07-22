@@ -4,17 +4,48 @@
     box-sizing: border-box;
 }
 
+/* from https://type-scale.com/ */
+
+html {font-size: 100%;} /*16px*/
 
 body {
-    /* https://cssgradient.io/swatches/ */
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
-    min-height: 100vh;
-    max-width: 960px;
-    margin: 0 auto;
+  background: white;
+  font-family: 'Krona One', sans-serif;
+  font-weight: 400;
+  line-height: 1.75;
+  color: #000000;
+  background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+}
+
+p {margin-bottom: 1rem;}
+
+h1, h2, h3, h4, h5 {
+  margin: 3rem 0 1.38rem;
+  font-family: 'Krona One', sans-serif;
+  font-weight: 400;
+  line-height: 1.3;
 }
 
 h1 {
-    margin-bottom: 1rem;
+  margin-top: 0;
+  font-size: 2.488rem;
+}
+
+h2 {font-size: 2.074rem;}
+
+h3 {font-size: 1.728rem;}
+
+h4 {font-size: 1.44rem;}
+
+h5 {font-size: 1.2rem;}
+
+small, .text_small {font-size: 0.833rem;}
+
+
+body {
+    min-height: 100vh;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
 main {
@@ -22,13 +53,11 @@ main {
     text-align: center;
 }
 
-main img {
-    margin: 20px;
+footer {
+    text-align: center;
 }
 
 /* Buttons */
-
-
 /* 
 adapted from 
 https://cssbuttons.io/detail/ke1221/ancient-walrus-24
@@ -37,11 +66,12 @@ https://cssbuttons.io/detail/ke1221/ancient-walrus-24
     display: none;
 }
 
-/* #button-area-top, #button-area-bottom {
-
-} */
+#button-area-top, #button-area-bottom {
+    display: flex;
+}
 
 button, .upload-label, canvas {
+    font-family: 'Krona One', sans-serif;
     margin: 1.5rem;
     border: 1px solid #e8e8e8;
     color: #090909;
