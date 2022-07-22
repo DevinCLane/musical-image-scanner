@@ -1,29 +1,10 @@
 /* 
-To do:
-- ✅ Resize user uploaded images so they fit the canvas
-- include some of my favorite images that sound nice
-- Make the music sound cooler
-- ✅ New random image should work
-- ✅ Change the whole canvas to make it smaller so the layout looks nicer
-- Add nice CSS
-- Change the browse button to look nice
-- Give confirmation of new upload
-- Give confirmation of new random image loaded
-- add line data to pitch
-- after loading a new image, sometimes get "An error with message "Index or size is negative or greater than the allowed amount" occurred inside the p5js library when loadPixels was called. If not stated otherwise, it might be an issue with the arguments passed to loadPixels."
-- ✅ cracking in my speakers?
-- Play with synth types: sine, triangle, sawtooth, square;
-*/
-
-/* 
 Turn an image into song by Devin Lane
 
 Analyzes color data and turns it into music.
 Splits each image into columns, and each column into four sections.
 We then average the color value of each section and assign it to a pitch.
 Then we move left to right until the image is fully drawn upon our canvas.
-Effect parameters are modulated according to different data in the image.
-
 */
 
 // variables
@@ -66,7 +47,6 @@ const sampler = new Tone.Sampler({
 	baseUrl: "/samples/",
 })
 
-
 reverb = new Tone.Reverb(2).toDestination();
 chorus = new Tone.Chorus(4, 2.5, 0.5).connect(reverb);
 distortion = new Tone.Distortion(0.8).connect(reverb);
@@ -93,18 +73,13 @@ document.getElementById('stop').addEventListener('click', () => {
     ready = false;
 })
 
-
-// new random image
-// add success message https://bobbyhadz.com/blog/javascript-change-button-text-on-click
+// new random image button
 const newImage = document.getElementById('new-image');
 newImage.addEventListener('click', async () => {
     myImage = await loadImage(`https://source.unsplash.com/random/600x600/?sig=${Math.random()}`);
-    // newImage.textContent = "New image loaded. Now press play"
     canvasResizer(myImage);
     clear();
 })
-
-// console.log(myImage)
 
 // Average helper function: create an average, remove the A from the RGBA values;
 const averagePixels = array => {
@@ -129,7 +104,7 @@ function getStandardDeviation (array) {
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
 }
 
-// canvas resize function
+// canvas resize helper function
     // if the image is taller than 600px, resize it, but maintain aspect ratio
     // from https://p5js.org/reference/#/p5/createFileInput
 function canvasResizer (myImage) {
@@ -149,7 +124,6 @@ function preload() {
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
     frameRate(5.2);
-    // colorMode(HSL);
 }
 
 let i = 0;
@@ -164,14 +138,9 @@ function draw() {
         return;
     }
 
+    // resize the canvas if the image is too big
     canvasResizer(myImage);
 
-    // if the user image is too big, resize it down:
-    
-    // if(myImage.height && myImage.height !== canvasHeight){
-    //     myImage.resize(myImage.width*canvasHeight/myImage.height, canvasHeight)
-    //     resizeCanvas(myImage.width, myImage.height)
-    // }
     // split the image into columns. We will analyze one column at a time musically, and draw it.
     let imageColumn = myImage.get(i, 0, 25, myImage.height)
 
@@ -208,8 +177,7 @@ function draw() {
     console.log(bass, "bass note")
     // synth.triggerAttack(bass, now)
 
-    // synth.triggerRelease([soprano, alto, tenor, bass], now);
-
+    // play the notes here
     sampler.triggerAttackRelease(alto, now)
     plucky.triggerAttackRelease(tenor, now)
     fm.triggerAttackRelease(bass, now)
@@ -218,11 +186,6 @@ function draw() {
     // todo: programmatically change effect parameters and synth parameters in here 
     // crusher.bits = lerp(0, 16, getStandardDeviation(bassImageBand.pixels)/255)
     // chorus.frequency = lerp(0, 16, averagePixels(altoImageBand.pixels)/255)
-    // reverb.decay = lerp(0, 10, averagePixels(bassImageBand.pixels)/255) 
-    // linear interpolation to get a range of pitches I like
-    // let pitch = lerp(60, 900, averagePixels(imageColumn.pixels)/255)
-    // console.log(pitch)
-    // synth.triggerAttackRelease(pitch, '16n')
     
     // draw the image one 'imageColumn' at a time from left to right, at the speed of the frame rate
     image(imageColumn, i, 0)
