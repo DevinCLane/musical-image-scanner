@@ -76,7 +76,7 @@ document.getElementById('stop').addEventListener('click', () => {
 // new random image button
 const newImage = document.getElementById('new-image');
 newImage.addEventListener('click', async () => {
-    myImage = await loadImage(`https://source.unsplash.com/random/600x600/?sig=${Math.random()}`);
+    myImage = await loadImage(`https://picsum.photos/600?random=${Date.now()}`);
     canvasResizer(myImage);
     clear();
 })
@@ -118,7 +118,7 @@ function canvasResizer (myImage) {
 
 
 function preload() {
-    myImage = loadImage('https://source.unsplash.com/random/600x600');
+    myImage = loadImage('https://picsum.photos/600');
 }
 
 function setup() {
