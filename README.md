@@ -40,5 +40,3 @@ Given an image, turn it into sound.
 ## Contact
 Devin Lane
 [https://www.devinlane.com/](https://www.devinlane.com/)
-
-devin.c.lane@gmail.com
